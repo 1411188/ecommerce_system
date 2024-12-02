@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Seller, Product, Cart, CartItem, Order, Message, Rating, Follow
+from .models import Product, Cart, CartItem, Order, Message, Rating
 from django.contrib.auth.models import User
 
 
@@ -7,15 +7,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email']
-
-
-class SellerSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
-    class Meta:
-        model = Seller
-        fields = ['id', 'user', 'shop_name']
-
 
 class ProductSerializer(serializers.ModelSerializer):
     seller = SellerSerializer()
@@ -67,12 +58,4 @@ class RatingSerializer(serializers.ModelSerializer):
         model = Rating
         fields = ['id', 'user', 'product', 'rating', 'comment', 'created_at']
 
-
-class FollowSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    seller = SellerSerializer()
-
-    class Meta:
-        model = Follow
-        fields = ['id', 'user', 'seller']
 

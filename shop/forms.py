@@ -13,10 +13,10 @@ class OrderForm(forms.ModelForm):
         
 class RatingForm(forms.ModelForm):
     class Meta:
-    model = Rtaing
-    fields = ['product', 'rating', 'comment']
+        model = Rating
+        fields = ['product', 'rating', 'comment']
     
 class FollowForm(forms.ModelForm):
     class Meta:
-        model = Folllow
+        model = Follow
         fields = ['seller']

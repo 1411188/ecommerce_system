@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+from dotenv import load_dotenv
 import os
 from pathlib import Path
 
@@ -146,5 +147,10 @@ MPESA_CONSUMER_SECRET = os.getenv('MPESA_CONSUMER_SECRET')
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+
+
+load_dotenv()
+
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
 
