@@ -25,4 +25,6 @@ urlpatterns = [
     path('payment/stripe/', views.process_stripe_payment, name='process_stripe_payment'),
     path('api/products/', views.product_list, name='product_list'),
     path('webhook/', stripe_webhook, name='stripe-webhook'),
+    path('daraja/stk-push/', views.daraja_stk_push, name='daraja_stk_push'),
+    path('daraja/callback/', views.daraja_callback, name='daraja_callback'),
 ]
