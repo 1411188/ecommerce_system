@@ -15,6 +15,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from .daraja.services import initiate_stk_push
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
@@ -51,6 +53,29 @@ def stripe_webhook(request):
         print('PaymentIntent was successful!')
 
     return JsonResponse({'status': 'success'})
+ @csrf_exempt
+def daraja_stk_push(request):
+    if request.method == "POST":
+        amount = request.POST.get("amount")
+        phone_number = request.POST.get("phone_number")
+        account_reference = request.POST.get("account_reference", "OrderPayment")
+        transaction_desc = request.POST.get("transaction_desc", "Payment for Order")
+        
+        try:
+            response = initiate_stk_push(amount, phone_number, account_reference, transaction_desc)
+            return JsonResponse(response)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
+@csrf_exempt
+def daraja_callback(request):
+    if request.method == "POST":
+        data = request.body.decode('utf-8')
+        print("Callback data received:", data)
+        # Process the callback data (e.g., update order status, save transaction details)
+        return JsonResponse({"message": "Callback received successfully"})
+    return JsonResponse({"error": "Invalid request method"}, status=400)  
     
 def register_user(request):
     if request.method == 'POST':
